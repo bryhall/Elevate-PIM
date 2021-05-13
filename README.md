@@ -25,7 +25,7 @@ If you already know the role(s) that you want to elevate and the justification, 
     Elevate-PIM -AccountID jdoe@contoso.com -Role "User Administrator","Conditional Access Administrator" -Justification "Service Request #AB12345"
 
 ## Help
-For more information, review the function's comment-based help or [**Elevate-PIM.md**](./Elevate-PIM.md)
+For more information, review the function's comment-based help or [**Elevate-PIM.md**](./_OnlineHelp/a/Elevate-PIM.md)
 
 
 
