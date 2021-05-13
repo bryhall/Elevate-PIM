@@ -103,8 +103,8 @@ Function Elevate-PIM {
 
     .NOTES
         ===========================================================
-        || Version:       0.2                                    ||
-        || Revision Date: 5/11/2021                              ||
+        || Version:       0.3                                    ||
+        || Revision Date: 5/12/2021                              ||
         || Author:        Bryan Hall                             ||
         || Copyright:     None                                   ||
         || Disclaimer:    Use at your own risk.                  ||
@@ -112,7 +112,8 @@ Function Elevate-PIM {
 
         This script requires the AzureADPreview module (https://docs.microsoft.com/en-us/powershell/azure/active-directory/install-adv2?view=azureadps-2.0) and must be run in a system with a user interface.
         This is a requirement for the Out-GridView call used in the script.
-        To run on Linux or Mac, the Microsoft.PowerShell.GraphicalTools may be needed (see https://devblogs.microsoft.com/powershell/out-gridview-returns/)
+        
+        While Out-GridView is supported on Linux or Mac, with the Microsoft.PowerShell.GraphicalTools (see https://devblogs.microsoft.com/powershell/out-gridview-returns/), the AzureADPreview module does not appear to function correctly on MacOS.
 
     .LINK
         PowerShell for Azure AD roles in Privileged Identity Management
