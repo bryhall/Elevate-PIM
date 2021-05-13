@@ -1,5 +1,22 @@
+<#PSScriptInfo
+    .VERSION 0.3
+    .GUID bc590fc4-6feb-43fa-8d5c-0b27a787f9d2
+    .AUTHOR Bryan Hall
+    .DESCRIPTION Provides a quick way to elevate an Azure AD Privileged Identity Management (PIM) role.  If no parameters are specified, the script will prompt for them as needed.
+    .COMPANYNAME 
+    .COPYRIGHT 
+    .TAGS AzureAD PIM
+    .LICENSEURI 
+    .PROJECTURI https://github.com/bryhall/Elevate-PIM
+    .ICONURI 
+    .REQUIRESMODULE AzureADPreview
+    .EXTERNALMODULEDEPENDENCIES 
+    .REQUIREDSCRIPTS 
+    .EXTERNALSCRIPTDEPENDENCIES 
+    .RELEASENOTES
+#> 
+
 Function Elevate-PIM {
-    #Requires -Module AzureADPreview
 
     <#
     .SYNOPSIS
