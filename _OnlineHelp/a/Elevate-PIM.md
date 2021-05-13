@@ -1,3 +1,4 @@
+
 # Elevate-PIM
 ## SYNOPSIS
 Provides a quick way to elevate an Azure AD Privileged Identity Management (PIM) role.
@@ -8,14 +9,18 @@ If no parameters are specified, the script will prompt for them as needed.
 
 ## SYNTAX
 ### Default (Default)
+
 ```
 Elevate-PIM [-AccountID <String>] [-Role <String[]>] [-Justification <String>] [-MaxMinutes <Int32>] [-TenantID <String>] [<CommonParameters>]
 ```
-
+### ListOnly (ListOnly)
+```
+Elevate-PIM [-ListOnly] [<CommonParameters>]
+```
 
 ## PARAMETERS
 ### -AccountID
-UPN or GUID of Azure AD user.
+UPN or GUID of Azure AD user.  
 If omitted, the script will provide an Azure AD Modern Authentication prompt.
 ```
 Type:                        String
@@ -29,7 +34,7 @@ Accept wildcard characters:  False
 ```
 
 ### -Role
-Exact name(s) of one or more Azure AD role to activate.  Enclose roles in quotes and separate multiple roles with comma (e.g., -Role "Conditional Access Administrator", "User Administrator").
+Exact name(s) of one or more Azure AD role to activate.  Enclose roles in quotes and separate multiple roles with comma (e.g., -Role "Conditional Access Administrator", "User Administrator").  
 If omitted, the script will provide an Out-GridView of all available roles that the authenticated user is eligible for in PIM.
 The user will select one (or more) roles to request.
 ```
@@ -44,7 +49,7 @@ Accept wildcard characters:  False
 ```
 
 ### -Justification
-Justification for request.  This is only used if the role activation requires justification.
+Justification for request.  This is only used if the role activation requires justification.  
 If omitted, the script will prompt for one if the Role Definition requires it.
 ```
 Type:                        String
@@ -58,7 +63,7 @@ Accept wildcard characters:  False
 ```
 
 ### -MaxMinutes
-If specified, sets the PIM request duration for the specified number of minutes.  If the role's defined maximum allowed value is less than the value provided here, the shorter amount will be used.
+If specified, sets the PIM request duration for the specified number of minutes.  If the role's defined maximum allowed value is less than the value provided here, the shorter amount will be used.  
 If omitted, the request will use the maximum allowed by the role's definition.
 ```
 Type:  Int32
@@ -72,7 +77,7 @@ Accept wildcard characters:  False
 ```
 
 ### -TenantID
-GUID of the Azure AD tenant.
+GUID of the Azure AD tenant.  
 If omitted, the script will use the Azure AD tenant associated with the authenticated user.
 ```
 Type:                        String
