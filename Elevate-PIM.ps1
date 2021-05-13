@@ -2,11 +2,10 @@
     .VERSION 0.3
     .GUID bc590fc4-6feb-43fa-8d5c-0b27a787f9d2
     .AUTHOR Bryan Hall
-    .DESCRIPTION Provides a quick way to elevate an Azure AD Privileged Identity Management (PIM) role.  If no parameters are specified, the script will prompt for them as needed.
-    .COMPANYNAME 
-    .COPYRIGHT 
+    .COMPANYNAME
+    .COPYRIGHT (c) 2021 Bryan Hall
     .TAGS AzureAD PIM
-    .LICENSEURI 
+    .LICENSEURI https://github.com/bryhall/Elevate-PIM/blob/main/LICENSE.md
     .PROJECTURI https://github.com/bryhall/Elevate-PIM
     .ICONURI 
     .EXTERNALMODULEDEPENDENCIES 
@@ -118,14 +117,6 @@
     "Change Control: AB123456" will be noted as the justification in the role activation request.  The user will be prompted to provide Modern Authentication credentials.
 
 .NOTES
-    ===========================================================
-    || Version:       0.3                                    ||
-    || Revision Date: 5/12/2021                              ||
-    || Author:        Bryan Hall                             ||
-    || Copyright:     None                                   ||
-    || Disclaimer:    Use at your own risk.                  ||
-    ===========================================================
-
     This script requires the AzureADPreview module (https://docs.microsoft.com/en-us/powershell/azure/active-directory/install-adv2?view=azureadps-2.0) and must be run in a system with a user interface.
     This is a requirement for the Out-GridView call used in the script.
     
