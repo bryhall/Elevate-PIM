@@ -198,13 +198,11 @@ None.
 
 
 ## NOTES
-```
 This script requires the AzureADPreview module (https://docs.microsoft.com/en-us/powershell/azure/active-directory/install-adv2?view=azureadps-2.0) and must be run in a system with a user interface.
 
 This is a requirement for the Out-GridView call used in the script.
 
 While Out-GridView is supported on Linux or Mac, with the Microsoft.PowerShell.GraphicalTools (see https://devblogs.microsoft.com/powershell/out-gridview-returns/), the AzureADPreview module does not appear to function correctly on MacOS.
-```
   
 
 ## RELATED LINKS
