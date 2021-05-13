@@ -179,7 +179,7 @@ Schedule         : class AzureADMSPrivilegedSchedule {
                      Type: Once
                      Duration: PT0S
                    }
-Reason : Change Control: AB123456
+Reason           : Change Control: AB123456
 ```
   
 
