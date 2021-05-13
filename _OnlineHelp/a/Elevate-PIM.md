@@ -109,17 +109,17 @@ This cmdlet supports the common parameters: ```-Debug, -ErrorAction, -ErrorVaria
 
 
 ## EXAMPLES
-### EXAMPLE 1
-```
-PS C:\> Elevate-PIM
-```
-##### DESCRIPTION:
+### EXAMPLE 1: Quick run
 This method prompts the user for each required parameter.
 It prompts the user for credentials and automatically looks up available PIM roles of the associated Azure AD tenant.  The user's available roles are displayed in an Out-GridView. The user selects 1 or more roles.
 For each role, the role's defined maximum time will be used. If the roles requires justification, the user will be prompted to provide one. The maximum time defined for the role(s) will be used.
+```
+PS C:\> Elevate-PIM
+```
 
 
-### EXAMPLE 2
+### EXAMPLE 2: List available roles only
+This will simply output a list of the user's assigned PIM roles then exit.
 ```
 PS C:\> Elevate-PIM -ListOnly
 
@@ -136,23 +136,22 @@ Global Administrator              Eligible                  240                 
 Intune Administrator              Eligible (Active)         480                  True 3a2c62db-5318-420d-8d74-23affee5d9d5 Direct
 User Administrator                Eligible                  480                  True fe930be7-5e62-47db-91af-98c3a49a38b1 Direct
 ```
-##### DESCRIPTION:
-This will simply output a list of the user's assigned PIM roles then exit.
 
 
-### EXAMPLE 3
-```
-Elevate-PIM -TenantID 01020304-1234-abcd-abab-a1b2c3d4e5f6
-```
-##### DESCRIPTION:
+### EXAMPLE 3: PIM in Azure AD tenant that is different than the authenticated user's tenant
 This method is useful for guest access into another tenant.
 It prompts for user credentials for tenant "01020304-1234-abcd-abab-a1b2c3d4e5f6" and provides an Out-GridView of available roles to the user.  The user selects 1 or more roles. For each role, the role's defined maximum time will be used.  If the roles require justification, the user will be prompted to provide one.
-  
-### EXAMPLE 4
-
+```
+PS C:\> Elevate-PIM -TenantID 01020304-1234-abcd-abab-a1b2c3d4e5f6
 ```
 
-Elevate-PIM -AccountID jdoe@contoso.com -Role "Exchange Administrator","User Administrator" -Justification "Change Control: AB123456" -MaxMinutes 120
+
+### EXAMPLE 4: Fully-defined command
+This method will fully submit the elevation request without prompting the user for any additional information (except for the user's credentials).  It Attempts to activate both "Exchange Administrator" and "User Administrator" roles for user jdoe@contoso.com for 120 minutes (or the role's maximum, whichever is shorter).
+"Change Control: AB123456" will be noted as the justification in the role activation request.
+The user will be prompted to provide Modern Authentication credentials.
+```
+PS C:\> Elevate-PIM -AccountID jdoe@contoso.com -Role "Exchange Administrator","User Administrator" -Justification "Change Control: AB123456" -MaxMinutes 120
 
 ResourceId       : 0aa4c2af-52b6-43f1-aaa9-31c5fffb7458
 RoleDefinitionId : 29232cdf-9323-42fd-ade2-1d097af3e4de
@@ -181,12 +180,6 @@ Schedule         : class AzureADMSPrivilegedSchedule {
                    }
 Reason           : Change Control: AB123456
 ```
-  
-
-##### DESCRIPTION:
-This method will fully submit the elevation request without prompting the user for any additional information (except for the user's credentials).  It Attempts to activate both "Exchange Administrator" and "User Administrator" roles for user jdoe@contoso.com for 120 minutes (or the role's maximum, whichever is shorter).
-"Change Control: AB123456" will be noted as the justification in the role activation request.
-The user will be prompted to provide Modern Authentication credentials.
 
 
 ## INPUTS
@@ -206,8 +199,8 @@ While Out-GridView is supported on Linux or Mac, with the Microsoft.PowerShell.G
   
 
 ## RELATED LINKS
-**PowerShell for Azure AD roles in Privileged Identity Management**
+**PowerShell for Azure AD roles in Privileged Identity Management**  
 https://docs.microsoft.com/en-us/azure/active-directory/privileged-identity-management/powershell-for-azure-ad-roles
 
-**Install Azure Active Directory PowerShell for Graph**
+**Install Azure Active Directory PowerShell for Graph**  
 https://docs.microsoft.com/en-us/powershell/azure/active-directory/install-adv2?view=azureadps-2.0
