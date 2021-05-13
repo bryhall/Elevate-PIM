@@ -199,14 +199,6 @@ None.
 
 ## NOTES
 ```
-===========================================================
-|| Version: 0.3                                          ||
-|| Revision Date: 5/12/2021                              ||
-|| Author: Bryan Hall                                    ||
-|| Copyright: None                                       ||
-|| Disclaimer: Use at your own risk.                     ||
-===========================================================
-
 This script requires the AzureADPreview module (https://docs.microsoft.com/en-us/powershell/azure/active-directory/install-adv2?view=azureadps-2.0) and must be run in a system with a user interface.
 
 This is a requirement for the Out-GridView call used in the script.
