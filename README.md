@@ -10,7 +10,7 @@ The script was developed on Windows and has the following requirements:
 3. The PowerShell host must support *Out-GridView*.  Please feel free to modify the script to eliminate this call.
 4. Run the function on Windows*
 
-*Even with the [Microsoft.PowerShell.GraphicalTools](https://devblogs.microsoft.com/powershell/out-gridview-returns/) module installed (which enables Out-GridView on Linux and MacOS. installed on MacOS), the Azure AD Modern Authentication prompt that is called by the *Get-AzureADUser* command will fail on MacOS.  Please let me know if you know how to get this working on MacOS/Linux
+*Even with the [Microsoft.PowerShell.GraphicalTools](https://devblogs.microsoft.com/powershell/out-gridview-returns/) module installed (which enables Out-GridView on Linux and MacOS), the Azure AD Modern Authentication prompt that is called by the *Get-AzureADUser* command will fail on MacOS (and probably Linux).  Please let me know if you know how to get this working on MacOS/Linux
 
 
 ## Quick Start
