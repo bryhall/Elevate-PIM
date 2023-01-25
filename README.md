@@ -22,7 +22,7 @@ Simply run ``` Elevate-PIM``` without any parameters and the function will:
 
 If you already know the role(s) that you want to elevate and the justification, you may specify them in the parameters.  For example, this command will elevate *jdoe@contoso.com* to both *User Administrator* and *Conditional Access Administrator* roles with the justification reason referencing "Service Request #AB12345":
 
-    Elevate-PIM -AccountID jdoe@contoso.com -Role "User Administrator","Conditional Access Administrator" -Justification "Service Request #AB12345"
+    Elevate-PIM -AccountID "jdoe@contoso.com" -Role "User Administrator","Conditional Access Administrator" -Justification "Service Request #AB12345"
 
 ## Help
 For more information, review the function's comment-based help or [**Elevate-PIM.md**](./_OnlineHelp/a/Elevate-PIM.md)

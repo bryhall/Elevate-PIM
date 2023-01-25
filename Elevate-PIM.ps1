@@ -207,7 +207,7 @@ Try {
 
 #Show a normalized list of roles that the user has
 Write-Verbose "Normalizing User's List of Available Azure AD Role Assignments."
-$AvailableUserRoles = $UserRoles | Select-Object -Unique RoleDefinitionId | ForEach {
+$AvailableUserRoles = $UserRoles | Select-Object -Unique RoleDefinitionId | ForEach-Object {
     $xRoleID = $_.RoleDefinitionID
 
     $xMaxGrantPeriod = $RoleSettings | Where-Object {$_.RoleDefinitionID -eq $xRoleID} | Select-Object -ExpandProperty UserMemberSettings | Where-Object {$_.RuleIdentifier -eq 'ExpirationRule'} | Select-Object -ExpandProperty Setting | ConvertFrom-Json | Select-Object -ExpandProperty MaximumGrantPeriodInMinutes
