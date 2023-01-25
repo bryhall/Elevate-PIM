@@ -1,5 +1,5 @@
 <#PSScriptInfo
-    .VERSION 0.3
+    .VERSION 0.4
     .GUID bc590fc4-6feb-43fa-8d5c-0b27a787f9d2
     .AUTHOR Bryan Hall
     .COMPANYNAME
@@ -49,6 +49,7 @@
 .EXAMPLE
     Elevate-PIM
 
+    -----------------------------------
     DESCRIPTION:
     This method prompts the user for each required parameter.  It prompts the user for credentials and automatically looks up available PIM roles of the associated Azure AD tenant.
     The user's available roles are displayed in an Out-GridView.  The user selects 1 or more roles. For each role, the role's defined maximum time will be used.
@@ -70,50 +71,40 @@
     Intune Administrator             Eligible (Active)        480                  True 3a2c62db-5318-420d-8d74-23affee5d9d5 Direct    
     User Administrator               Eligible                 480                  True fe930be7-5e62-47db-91af-98c3a49a38b1 Direct
 
+    -----------------------------------
     DESCRIPTION:
     This will simply output a list of the user's assigned PIM roles then exit.
 
 
 .EXAMPLE
-    Elevate-PIM -TenantID 01020304-1234-abcd-abab-a1b2c3d4e5f6
+    Elevate-PIM -TenantID "01020304-1234-abcd-abab-a1b2c3d4e5f6"
 
+    -----------------------------------
     DESCRIPTION:
     This method is useful for guest access into another tenant.  It prompts for user credentials for tenant "01020304-1234-abcd-abab-a1b2c3d4e5f6" and provides an Out-GridView of available roles to the user.
     The user selects 1 or more roles. For each role, the role's defined maximum time will be used.  If the roles require justification, the user will be prompted to provide one.
 
 .EXAMPLE
-    Elevate-PIM -AccountID jdoe@contoso.com -Role "Exchange Administrator","User Administrator" -Justification "Change Control: AB123456" -MaxMinutes 120
+    Elevate-PIM -AccountID "jdoe@contoso.com" -Role "Exchange Administrator","User Administrator" -Justification "Change Control: AB123456" -MaxMinutes 15
 
-    ResourceId       : 0aa4c2af-52b6-43f1-aaa9-31c5fffb7458
-    RoleDefinitionId : 29232cdf-9323-42fd-ade2-1d097af3e4de
-    SubjectId        : 30228b81-1233-409e-8dfc-0bc4ab36239c
-    Type             : UserAdd
+    Role             : Exchange Administrator
     AssignmentState  : Active
-    Schedule         : class AzureADMSPrivilegedSchedule {
-                            StartDateTime: 5/12/2021 4:02:35 PM
-                            EndDateTime: 5/13/2021 5:02:34 AM
-                            Type: Once
-                            Duration: PT0S
-                        }                   
-    Reason           : Change Control: AB123456
+    Duration         : 15 Minutes
+    StartTime        : 1/25/2023 12:56:08 PM (Pacific Standard Time)
+    EndTime          : 1/25/2023 1:11:06 PM (Pacific Standard Time)
+    Justification    : Change Control: AB123456
 
-    
-    ResourceId       : 0aa4c2af-52b6-43f1-aaa9-31c5fffb7458
-    RoleDefinitionId : fe930be7-5e62-47db-91af-98c3a49a38b1
-    SubjectId        : 30228b81-1233-409e-8dfc-0bc4ab36239c
-    Type             : UserAdd
+    Role             : User Administrator
     AssignmentState  : Active
-    Schedule         : class AzureADMSPrivilegedSchedule {
-                            StartDateTime: 5/12/2021 4:02:35 PM
-                            EndDateTime: 5/13/2021 12:02:34 AM
-                            Type: Once
-                            Duration: PT0S
-                        }                   
-    Reason           : Change Control: AB123456
+    Duration         : 15 Minutes
+    StartTime        : 1/25/2023 12:56:08 PM (Pacific Standard Time)
+    EndTime          : 1/25/2023 1:11:06 PM (Pacific Standard Time)
+    Justification    : Change Control: AB123456
 
+    -----------------------------------
     DESCRIPTION:
     This method will fully submit the elevation request without prompting the user for any additional information (except for the user's credentials).
-    It Attempts to activate both "Exchange Administrator" and "User Administrator" roles for user jdoe@contoso.com for 120 minutes (or the role's maximum, whichever is shorter).
+    It Attempts to activate both "Exchange Administrator" and "User Administrator" roles for user jdoe@contoso.com for 15 minutes (or the role's maximum, whichever is shorter).
     "Change Control: AB123456" will be noted as the justification in the role activation request.  The user will be prompted to provide Modern Authentication credentials.
 
 .NOTES
@@ -140,14 +131,36 @@
 [CmdletBinding(DefaultParameterSetName='Default')]
 
 Param(
+    [Parameter(ParameterSetName='Default',Position=0)]
+    [Parameter(ParameterSetName='ListOnly',Position=0)]
     [String]$AccountID,
-    [Parameter(ParameterSetName='Default')]
+
+    [Parameter(ParameterSetName='Default',Position=1)]
+    #[Parameter(ParameterSetName='CloseRequest',Position=1)] #For future use
+    #If new roles are available, run either "Get-AzureADDirectoryRole | Select -Expand DisplayName"  or
+    #"Get-AzureADMSPrivilegedRoleDefinition | Select -Expand DisplayName" to generate this list.
+    [ValidateSet("Application Administrator","Application Developer","Authentication Administrator",
+        "Azure AD Joined Device Local Administrator","Azure Information Protection Administrator",
+        "Billing Administrator","Cloud Application Administrator","Compliance Administrator",
+        "Compliance Data Administrator","Conditional Access Administrator","Customer LockBox Access Approver",
+        "Directory Readers","Directory Synchronization Accounts","Exchange Administrator",
+        "Exchange Recipient Administrator","Global Administrator","Global Reader","Groups Administrator",
+        "Helpdesk Administrator","Intune Administrator","License Administrator","Message Center Reader",
+        "Password Administrator","Privileged Role Administrator","Reports Reader","Search Administrator",
+        "Security Administrator","Security Reader","Service Support Administrator","SharePoint Administrator",
+        "Skype for Business Administrator","Teams Administrator","Teams Communications Administrator",
+        "Teams Communications Support Engineer","Teams Communications Support Specialist",
+        "Teams Devices Administrator","User Administrator")]    
     [String[]]$Role,
-    [Parameter(ParameterSetName='Default')]
+
+    [Parameter(ParameterSetName='Default',Position=2,Mandatory=$true)]
     [String]$Justification,
+
     [Parameter(ParameterSetName='Default')]
     [Int]$MaxMinutes,
+
     [String]$TenantID,
+    
     [Parameter(ParameterSetName='ListOnly')]
     [Switch]$ListOnly
 )
@@ -164,6 +177,7 @@ If ($TenantID) {
 
 Try {
     #Connect to AzureAD (preview)
+    Write-Warning "If interactive credentials are required, a Microsoft Online authentication prompt will appear.  Please be aware that this may sometimes appear behind other windows."
     $ConnectionInfo = Connect-AzureAD @ConnectParams -ErrorAction Stop
 
     #Get the User object
@@ -228,10 +242,10 @@ If ($PSBoundParameters['ListOnly']) {
 
 #Prompt for selection, if not specified at runtime
 $SelectedRole = @()
-If ($Role) {
+If ($PSBoundParameters.ContainsKey('Role')) {
     Write-Verbose "Selecting the Role(s) Specified in the Runtime Parameter"
     ForEach ($xRole in $Role) {
-        $TempSelectedRole = $AvailableUserRoles | Where {$_.RoleName -eq $xRole}
+        $TempSelectedRole = $AvailableUserRoles | Where-Object {$_.RoleName -eq $xRole}
         If (-not $TempSelectedRole) {
             Write-Warning "Either the role could not be found or it is not available to the user:  $xRole"
             Continue
@@ -244,7 +258,7 @@ If ($Role) {
     $SelectedRole = $AvailableUserRoles | Sort-Object -Property AssignmentStat | Out-GridView -OutputMode Multiple -Title "Select an Eligible role"
 } #End If..Else
 
-$SelectedRole | ForEach {
+$SelectedRole | ForEach-Object {
     If ($_.AssignmentState -match '(Active)') {
         Write-Host -ForegroundColor Magent "The $($SelectedRole.RoleName) role is already active."
     } Else {
@@ -271,7 +285,7 @@ $SelectedRole | ForEach {
             Schedule         = $Schedule
         } #End Splat
 
-        #Add Justification if required
+        #Prompt for Justification if the assignment requires it
         If ($_.JustificationRequired -eq $True) {
             #Prompt for a reason if it was not already supplied.
             If (-Not $Justification) {
@@ -284,6 +298,24 @@ $SelectedRole | ForEach {
 
         #Submit request for the role elevation.
         Write-Verbose "Requesting Azure AD Role Assignment"
-        Open-AzureADMSPrivilegedRoleAssignmentRequest @RequestParams -ErrorAction Stop
+        $AssignmentResults = Open-AzureADMSPrivilegedRoleAssignmentRequest @RequestParams -ErrorAction Stop
+        If ($null -ne $AssignmentResults) {
+            #Get UTC Offset of current time zone
+            Try {
+                $UTCOffset = (Get-TimeZone -ErrorAction Stop).BaseUTCOffset.Hours
+                $LocalTZ = (Get-TimeZone).Id
+            } Catch {
+                $UTCOffset = 0
+                $LocalTZ = 'UTC'
+            } #End Try..Catch
+            
+            #Output assignment results
+            $AssignmentResults | Select-Object -Property @{N='Role';E={$RoleDefinitions.Where{$_.Id -eq $AssignmentResults.RoleDefinitionId}.DisplayName}},
+                AssignmentState,
+                @{N='StartTime';E={"{0} ({1})" -f (Get-Date $AssignmentResults.Schedule.StartDateTime).AddHours($UTCOffset),$LocalTZ}},
+                @{N='EndTime';E={"{0} ({1})" -f (Get-Date $AssignmentResults.Schedule.EndDateTime).AddHours($UTCOffset),$LocalTZ}},
+                @{N='Duration';E={"{0} Minutes" -f [math]::Round((New-TimeSpan -Start $AssignmentResults.Schedule.StartDateTime -End $AssignmentResults.Schedule.EndDateTime).TotalMinutes,0.5)}},
+                @{N='Justification';E={$Justification}}
+        } #End If
     } #End If..Else
 } #End ForEach
