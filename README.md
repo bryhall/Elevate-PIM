@@ -1,4 +1,7 @@
 # Elevate-PIM
+
+> Update: 2025/4/7 - This will no longer work with the deprecation of the [AzureAD, AzureADPreview, and MS Online modules](https://learn.microsoft.com/en-us/powershell/microsoftgraph/migration-steps?view=graph-powershell-1.0).
+
 This function was written out of frustration. Using the Azure portal for requesting [**Privileged Identity Management (PIM)**](https://docs.microsoft.com/en-us/azure/active-directory/privileged-identity-management/pim-configure) role activations took [far too long with too many clicks](https://docs.microsoft.com/en-us/azure/active-directory/privileged-identity-management/pim-how-to-activate-role?tabs=new).  The script greatly simplifies the role activation process.  What would take me 3+ minutes to complete using the Azure portal can be completed in about 10 seconds with the script.
 
 PIM is a feature of Azure Active Directory that provides time-based and approval-based role activation to mitigate the risks of excessive, unnecessary, or misused access permissions on resources that you care about.  Users that use PIM require [Azure AD Premium P2](https://docs.microsoft.com/en-us/azure/active-directory/privileged-identity-management/pim-configure#license-requirements) licenses.
